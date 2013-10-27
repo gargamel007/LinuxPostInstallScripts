@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###########################
-#Usage 
+#Doc & Usage 
 ###########################
 #This script is intended for post install on a xubuntu 13.10 system on virtual box !
 :<<'USAGE'

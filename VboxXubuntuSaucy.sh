@@ -22,7 +22,7 @@ USERNAME="gargamel"
 setupTools() {
   echo "Install Tools"
   #Sublime text in now available in version 3 but still use version 2
-  add-apt-repository ppa:webupd8team/sublime-text-2
+  add-apt-repository -y ppa:webupd8team/sublime-text-2
   apt-get update
   apt-get install -y sublime-text
   #tree lists contents of a directory
@@ -42,8 +42,7 @@ upgradeSystem() {
 ###########################
 setupVboxTools() {
   echo "Installing Virtual Box Stuff"
-  apt-get install dkms
-  sudo apt-get -y install linux-headers-generic linux-headers-$(uname -r)
+  apt-get -y install dkms linux-headers-generic linux-headers-$(uname -r)
   echo "###########################################"
   echo "Mount Additions CD-ROM and press any key"
   read unused

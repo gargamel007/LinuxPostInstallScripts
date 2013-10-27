@@ -22,7 +22,7 @@ USERNAME="gargamel"
 setupTools() {
   echo "Install Tools"
   #Sublime text in now available in version 3 but still use version 2
-  add-apt-repository ppa:webupd8team/sublime-text-2
+  add-apt-repository -y ppa:webupd8team/sublime-text-2
   apt-get update
   apt-get install -y sublime-text
   #tree lists contents of a directory

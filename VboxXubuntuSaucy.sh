@@ -42,8 +42,7 @@ upgradeSystem() {
 ###########################
 setupVboxTools() {
   echo "Installing Virtual Box Stuff"
-  apt-get install dkms
-  sudo apt-get -y install linux-headers-generic linux-headers-$(uname -r)
+  apt-get -y install dkms linux-headers-generic linux-headers-$(uname -r)
   echo "###########################################"
   echo "Mount Additions CD-ROM and press any key"
   read unused

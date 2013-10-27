@@ -6,14 +6,14 @@
 #This script is intended for post install on a xubuntu 13.10 system on virtual box !
 :<<'USAGE'
 sudo apt-get install git
-
-#run script as root
+git clone https://github.com/gargamel007/LinuxPostInstallScripts.git Code/LinuxPostInstallScripts
+sudo bash Code/LinuxPostInstallScripts/VboxXubuntuSaucy.sh
 USAGE
 
 ###########################
 #Configuration
 ###########################
-USERNAME = gargamel
+USERNAME="gargamel"
 
 
 ###########################
@@ -43,12 +43,12 @@ upgradeSystem() {
 setupVboxTools() {
   echo "Installing Virtual Box Stuff"
   apt-get install dkms
-  sudo apt-get install linux-headers-generic linux-headers-$(uname -r)
+  sudo apt-get -y install linux-headers-generic linux-headers-$(uname -r)
   echo "###########################################"
   echo "Mount Additions CD-ROM and press any key"
   read unused
   cd /media/$USERNAME/VBOX*
-  ./runasroot.sh
+  ./VBoxLinuxAdditions.run
   cd /home/$USERNAME
   #Mount Shared folders
   adduser $USERNAME vboxsf
@@ -57,4 +57,14 @@ setupVboxTools() {
 }
 
 
+###########################
+#MAIN SECTION
+###########################
+setupTools
+upgradeSystem
 setupVboxTools
+
+echo "###########################################"
+echo "#####	Setup Completed	  ##########"
+echo " "
+echo "You can reboot your system now !"

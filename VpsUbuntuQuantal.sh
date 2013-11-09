@@ -5,7 +5,7 @@
 ###########################
 #This script is intended for post install on a xubuntu 13.10 system on virtual box !
 :<<'USAGE'
-sudo apt-get install git
+sudo apt-get -qq update && apt-get -y -qq install git
 git clone https://github.com/gargamel007/LinuxPostInstallScripts.git Code/LinuxPostInstallScripts
 sudo bash Code/LinuxPostInstallScripts/VpsUbuntuQuantal.sh
 USAGE
@@ -40,7 +40,7 @@ echo "#################"
 echo "UPGRADE INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
-apt-get install -y -qq tree vim less screen git htop software-properties-common
+apt-get install -y -qq dialog tree vim less screen git htop software-properties-common
 
 
 #Install tvmanmer && Subliminal
@@ -48,13 +48,13 @@ echo "#################"
 echo "INSTALLING TV TOOLS"
 apt-get -y -qq install python-bs4 python-requests python-html5lib python-lxml python-dev libxml2-dev  libxslt-dev git-core python-pip git-core python-pip
 pip install -q subliminal tvnamer
-su $USERNAME -c tvnamer --save=/tmp/mytvnamerconfig.json #Edit file
-su $USERNAME -c mv /tmp/mytvnamerconfig.json ~/.tvnamer.json #Place in Home dir !
+su $USERNAME -c "tvnamer --save=/tmp/mytvnamerconfig.json" #Edit file
+su $USERNAME -c "mv /tmp/mytvnamerconfig.json ~/.tvnamer.json" #Place in Home dir !
 
 ## Install bittorent client :
 echo "#################"
 echo "INSTALLING DELUGE"
-add-apt-repository -y -qq ppa:deluge-team/ppa
+add-apt-repository -y ppa:deluge-team/ppa
 apt-get install -y -qq deluged deluge-web
 adduser --disabled-password --system --home /var/lib/deluge --gecos "$USERNAME Deluge Server" --group deluge
 touch /var/log/deluged.log

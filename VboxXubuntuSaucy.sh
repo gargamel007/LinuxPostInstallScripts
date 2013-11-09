@@ -10,6 +10,8 @@ git clone https://github.com/gargamel007/LinuxPostInstallScripts.git Code/LinuxP
 sudo bash Code/LinuxPostInstallScripts/VboxXubuntuSaucy.sh
 USAGE
 
+
+
 ###########################
 #Configuration
 ###########################
@@ -81,9 +83,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 changeSudoTimeout
-#setupTools
-#upgradeSystem
-#setupVboxTools
+setupTools
+upgradeSystem
+setupVboxTools
 
 echo "###########################################"
 echo "#####	Setup Completed	  ##########"

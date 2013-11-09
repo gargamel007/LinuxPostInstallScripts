@@ -37,8 +37,8 @@ dpkg-reconfigure openssh-server
 
 #Install Tools
 echo "#################"
-echo "INSTALLING BASE TOOLS"
-apt-get update && apt-get upgrade
+echo "UPGRADE INSTAL BASE TOOLS"
+apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
 apt-get install -y -qq tree vim less screen git htop software-properties-common
 
@@ -47,14 +47,14 @@ apt-get install -y -qq tree vim less screen git htop software-properties-common
 echo "#################"
 echo "INSTALLING TV TOOLS"
 apt-get -y -qq install python-bs4 python-requests python-html5lib python-lxml python-dev libxml2-dev  libxslt-dev git-core python-pip git-core python-pip
-pip install subliminal tvname
+pip install -q subliminal tvnamer
 su $USERNAME -c tvnamer --save=/tmp/mytvnamerconfig.json #Edit file
 su $USERNAME -c mv /tmp/mytvnamerconfig.json ~/.tvnamer.json #Place in Home dir !
 
 ## Install bittorent client :
 echo "#################"
 echo "INSTALLING DELUGE"
-add-apt-repository ppa:deluge-team/ppa
+add-apt-repository -y -qq ppa:deluge-team/ppa
 apt-get install -y -qq deluged deluge-web
 adduser --disabled-password --system --home /var/lib/deluge --gecos "$USERNAME Deluge Server" --group deluge
 touch /var/log/deluged.log
@@ -66,7 +66,7 @@ chown deluge:deluge /var/lib/deluge/incoming
 openssl req -new -x509 -nodes -out /var/lib/deluge/ssl/deluge.cert.pem -keyout /var/lib/deluge/ssl/deluge.key.pem
 chown deluge:deluge *
 
-mv $BASEDIR/UtilScripts/deluge-deameon /etc/init.d/deluge-daemon
+mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
 /etc/init.d/deluge-daemon start

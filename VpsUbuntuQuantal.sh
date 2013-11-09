@@ -80,7 +80,7 @@ mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
 service deluged restart
-
+sleep 2
 #reconfigure deluged 
 deluge-console -c /var/lib/deluge "config -s move_completed_path /var/lib/deluge/completed"
 deluge-console -c /var/lib/deluge "config -s download_location /var/lib/deluge/incoming"
@@ -93,11 +93,11 @@ deluge-console -c /var/lib/deluge "config -s max_active_seeding 1"
 deluge-console -c /var/lib/deluge "config -s stop_seed_at_ratio true"
 deluge-console -c /var/lib/deluge "config -s stop_seed_ratio 1.1"
 deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
-deluge-console -c /var/lib/deluge "config -s https true"
 
-sleep 3
-/etc/init.d/deluge-daemon restart
+
+sed -i "s/\"https\": false/\"https\": true/g" /var/lib/deluge/web.conf
 sleep 2
+/etc/init.d/deluge-daemon start
 
 ln -s /var/lib/deluge/ /home/$USERNAME/deluge_folder
 mkdir /home/$USERNAME/ready

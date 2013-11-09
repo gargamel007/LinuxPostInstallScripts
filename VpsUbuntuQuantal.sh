@@ -55,7 +55,7 @@ su $USERNAME -c "mv /tmp/mytvnamerconfig.json ~/.tvnamer.json" #Place in Home di
 echo "#################"
 echo "INSTALLING DELUGE"
 add-apt-repository -y ppa:deluge-team/ppa
-apt-get install -y -qq deluged deluge-web
+apt-get install -y -qq deluged deluge-web deluge-console
 adduser --disabled-password --system --home /var/lib/deluge --gecos "$USERNAME Deluge Server" --group deluge
 touch /var/log/deluged.log
 touch /var/log/deluge-web.log
@@ -80,24 +80,24 @@ mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
 service deluged restart
-/etc/init.d/deluge-daemon stop
 
 #reconfigure deluged 
-sed -i "s/\"move_completed_path\": \"/var/lib/deluge\"/\"move_completed_path\": \"/var/lib/deluge\completed/g" /var/lib/deluge/core.conf
-sed -i "s/\"download_location\": \"/var/lib/deluge\"/\"download_location\": \"/var/lib/deluge\incoming/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_connections_global\": 200/\"max_connections_global\": 800/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_upload_slots_global\": 4/\"max_upload_slots_global\": 2/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_half_open_connections\": 50/\"max_half_open_connections\": 150/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_connections_per_second\": 20/\"max_connections_per_second\": 60/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_active_downloading\": 3/\"max_active_downloading\": 4/g" /var/lib/deluge/core.conf
-sed -i "s/\"max_active_seeding\": 5/\"max_active_seeding\": 1/g" /var/lib/deluge/core.conf
-sed -i "s/\"stop_seed_at_ratio\": false/\"stop_seed_at_ratio\": true/g" /var/lib/deluge/core.conf
-sed -i "s/\"stop_seed_ratio\": 2.0/\"stop_seed_ratio\": 1.1/g" /var/lib/deluge/core.conf
+deluge-console -c /var/lib/deluge "config -s move_completed_path /var/lib/deluge/completed"
+deluge-console -c /var/lib/deluge "config -s download_location /var/lib/deluge/incoming"
+deluge-console -c /var/lib/deluge "config -s max_connections_global 800"
+deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
+deluge-console -c /var/lib/deluge "config -s max_half_open_connections 150"
+deluge-console -c /var/lib/deluge "config -s max_connections_per_second 60"
+deluge-console -c /var/lib/deluge "config -s max_active_downloading 4"
+deluge-console -c /var/lib/deluge "config -s max_active_seeding 1"
+deluge-console -c /var/lib/deluge "config -s stop_seed_at_ratio true"
+deluge-console -c /var/lib/deluge "config -s stop_seed_ratio 1.1"
+deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
+deluge-console -c /var/lib/deluge "config -s https true"
 
-
-sed -i "s///g" /var/lib/deluge/core.conf
-sed -i "s/\"https\": false/\"https\": true/g" /var/lib/deluge/core.conf
-/etc/init.d/deluge-daemon start
+sleep 3
+/etc/init.d/deluge-daemon restart
+sleep 2
 
 ln -s /var/lib/deluge/ /home/$USERNAME/deluge_folder
 mkdir /home/$USERNAME/ready
@@ -105,6 +105,6 @@ chown -R $USERNAME:$USERNAME /home/$USERNAME/
 
 
 echo "Please log in to Deluge and configure password and ssl"
-echo "default port is 9092 - default pass is deluge"
+echo "use https default port is 9092 - default pass is deluge"
 echo "Once completed press any key"
 read a_unused

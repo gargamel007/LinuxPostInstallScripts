@@ -79,6 +79,24 @@ END
 mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
+service deluged restart
+/etc/init.d/deluge-daemon stop
+
+#reconfigure deluged 
+sed -i "s/\"move_completed_path\": \"/var/lib/deluge\"/\"move_completed_path\": \"/var/lib/deluge\completed/g" /var/lib/deluge/core.conf
+sed -i "s/\"download_location\": \"/var/lib/deluge\"/\"download_location\": \"/var/lib/deluge\incoming/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_connections_global\": 200/\"max_connections_global\": 800/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_upload_slots_global\": 4/\"max_upload_slots_global\": 2/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_half_open_connections\": 50/\"max_half_open_connections\": 150/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_connections_per_second\": 20/\"max_connections_per_second\": 60/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_active_downloading\": 3/\"max_active_downloading\": 4/g" /var/lib/deluge/core.conf
+sed -i "s/\"max_active_seeding\": 5/\"max_active_seeding\": 1/g" /var/lib/deluge/core.conf
+sed -i "s/\"stop_seed_at_ratio\": false/\"stop_seed_at_ratio\": true/g" /var/lib/deluge/core.conf
+sed -i "s/\"stop_seed_ratio\": 2.0/\"stop_seed_ratio\": 1.1/g" /var/lib/deluge/core.conf
+
+
+sed -i "s///g" /var/lib/deluge/core.conf
+sed -i "s/\"https\": false/\"https\": true/g" /var/lib/deluge/core.conf
 /etc/init.d/deluge-daemon start
 
 ln -s /var/lib/deluge/ /home/$USERNAME/deluge_folder

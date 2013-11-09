@@ -66,6 +66,15 @@ chown deluge:deluge /var/lib/deluge/incoming
 openssl req -new -x509 -nodes -out /var/lib/deluge/ssl/deluge.cert.pem -keyout /var/lib/deluge/ssl/deluge.key.pem
 chown deluge:deluge *
 
+
+tee /etc/default/deluge-daemon 1>/dev/null <<END
+# Configuration for /etc/init.d/deluge-daemon
+# The init.d script will only run if this variable non-empty.
+DELUGED_USER="deluge"
+# Should we run at startup?
+RUN_AT_STARTUP="YES"
+END
+
 mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults

@@ -61,10 +61,11 @@ touch /var/log/deluged.log
 touch /var/log/deluge-web.log
 chown deluge:deluge /var/log/deluge*
 adduser $USERNAME deluge
-mkdir /var/lib/deluge/incoming
-chown deluge:deluge /var/lib/deluge/incoming
-openssl req -new -x509 -nodes -out /var/lib/deluge/ssl/deluge.cert.pem -keyout /var/lib/deluge/ssl/deluge.key.pem
-chown deluge:deluge *
+#Create destination directories
+mkdir -p /var/lib/deluge/incoming /var/lib/deluge/completed
+mkdir -p /var/lib/deluge/ssl
+openssl req -new -x509 -nodes -out /var/lib/deluge/ssl/daemon.cert -keyout /var/lib/deluge/ssl/deamon.pkey
+chown -R deluge:deluge /var/lib/deluge
 
 
 tee /etc/default/deluge-daemon 1>/dev/null <<END
@@ -85,6 +86,7 @@ mkdir /home/$USERNAME/ready
 chown -R $USERNAME:$USERNAME /home/$USERNAME/
 
 
-echo "Please log in to Deluge and configure password and ssl - default port is 9092"
+echo "Please log in to Deluge and configure password and ssl"
+echo "default port is 9092 - default pass is deluge"
 echo "Once completed press any key"
 read a_unused

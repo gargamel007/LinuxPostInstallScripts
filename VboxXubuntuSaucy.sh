@@ -14,7 +14,7 @@ USAGE
 #Configuration
 ###########################
 USERNAME="gargamel"
-
+SUDO_TIMEOUT=60
 
 ###########################
 #Utilities & Tools
@@ -26,8 +26,24 @@ setupTools() {
   apt-get update
   apt-get install -y sublime-text
   #tree lists contents of a directory
-  apt-get install -y tree terminator vim less screen git terminator htop git
+  apt-get install -y tree terminator vim less screen git htop
 }
+
+###########################
+#Extend sudo timeout
+###########################
+changeSudoTimeout() {
+  echo "Extend sudo timeout to $SUDO_TIMEOUT"
+  cp /etc/sudoers /tmp/sudoers.new
+  
+  if ! grep -q passwd_timeout /tmp/sudoers.new 
+    then
+    sudo sed -i "s/env_reset/env_reset,passwd_timeout=$SUDO_TIMEOUT/g" /tmp/sudoers.new
+  fi
+  cp /tmp/sudoers.new /etc/sudoers
+  rm /tmp/sudoers.new
+}
+
 
 ###########################
 #Upgrade system
@@ -59,9 +75,15 @@ setupVboxTools() {
 ###########################
 #MAIN SECTION
 ###########################
-setupTools
-upgradeSystem
-setupVboxTools
+if [[ $EUID -ne 0 ]]; then
+  echo "You must be a root user" 2>&1
+  exit 1
+fi
+
+changeSudoTimeout
+#setupTools
+#upgradeSystem
+#setupVboxTools
 
 echo "###########################################"
 echo "#####	Setup Completed	  ##########"

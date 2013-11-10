@@ -36,8 +36,8 @@ rm /etc/ssh/ssh_host_*
 dpkg-reconfigure openssh-server
 
 #Install Tools
-echo "#################"
-echo "UPGRADE INSTAL BASE TOOLS"
+echo "#############################"
+echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
 apt-get install -y -qq dialog tree vim less screen git htop software-properties-common
@@ -79,8 +79,10 @@ END
 mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
+sleep 1
 service deluged restart
-sleep 2
+/etc/init.d/deluge-daemon start
+sleep 6
 #reconfigure deluged 
 deluge-console -c /var/lib/deluge "config -s move_completed_path /var/lib/deluge/completed"
 deluge-console -c /var/lib/deluge "config -s download_location /var/lib/deluge/incoming"
@@ -94,7 +96,7 @@ deluge-console -c /var/lib/deluge "config -s stop_seed_at_ratio true"
 deluge-console -c /var/lib/deluge "config -s stop_seed_ratio 1.1"
 deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
 
-
+sleep 3
 sed -i "s/\"https\": false/\"https\": true/g" /var/lib/deluge/web.conf
 sleep 2
 /etc/init.d/deluge-daemon start

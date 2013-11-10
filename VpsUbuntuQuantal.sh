@@ -76,14 +76,19 @@ DELUGED_USER="deluge"
 RUN_AT_STARTUP="YES"
 END
 
+#Remove Default script created by Ubuntu
+service deluged stop
+sleep 4
+update-rc.d -f deluged remove
+rm /etc/init.d/deluged
+
 mv $BASEDIR/UtilScripts/deluge-deamon /etc/init.d/deluge-daemon
 chmod 755 /etc/init.d/deluge-daemon
 update-rc.d deluge-daemon defaults
-sleep 1
-service deluged restart
 /etc/init.d/deluge-daemon start
 sleep 6
 #reconfigure deluged 
+deluge-console -c /var/lib/deluge "config -s move_completed true"
 deluge-console -c /var/lib/deluge "config -s move_completed_path /var/lib/deluge/completed"
 deluge-console -c /var/lib/deluge "config -s download_location /var/lib/deluge/incoming"
 deluge-console -c /var/lib/deluge "config -s max_connections_global 800"
@@ -96,10 +101,7 @@ deluge-console -c /var/lib/deluge "config -s stop_seed_at_ratio true"
 deluge-console -c /var/lib/deluge "config -s stop_seed_ratio 1.1"
 deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
 
-sleep 3
-sed -i "s/\"https\": false/\"https\": true/g" /var/lib/deluge/web.conf
 sleep 2
-/etc/init.d/deluge-daemon start
 
 ln -s /var/lib/deluge/ /home/$USERNAME/deluge_folder
 mkdir /home/$USERNAME/ready

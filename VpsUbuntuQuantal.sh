@@ -35,12 +35,17 @@ sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
 rm /etc/ssh/ssh_host_*
 dpkg-reconfigure openssh-server
 
+#Fix locale issue
+locale-gen en_US.UTF-8
+locale-gen fr_FR.UTF-8
+
 #Install Tools
 echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
+add-apt-repository -y ppa:keithw/mosh
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
-apt-get install -y -qq dialog tree vim less screen git htop software-properties-common
+apt-get install -y -qq dialog tree vim less screen git htop software-properties-common mosh
 
 
 #Install tvmanmer && Subliminal
@@ -50,6 +55,7 @@ apt-get -y -qq install python-bs4 python-requests python-html5lib python-lxml py
 pip install -q subliminal tvnamer
 su $USERNAME -c "tvnamer --save=/tmp/mytvnamerconfig.json" #Edit file
 su $USERNAME -c "mv /tmp/mytvnamerconfig.json ~/.tvnamer.json" #Place in Home dir !
+mkdir -p /home/$USERNAME/.config
 
 ## Install bittorent client :
 echo "#################"
@@ -101,12 +107,9 @@ deluge-console -c /var/lib/deluge "config -s stop_seed_at_ratio true"
 deluge-console -c /var/lib/deluge "config -s stop_seed_ratio 1.1"
 deluge-console -c /var/lib/deluge "config -s max_upload_slots_global 2"
 
-sleep 2
-
 ln -s /var/lib/deluge/ /home/$USERNAME/deluge_folder
-mkdir /home/$USERNAME/ready
+mkdir -p /home/$USERNAME/ready /home/$USERNAME/cleaning
 chown -R $USERNAME:$USERNAME /home/$USERNAME/
-
 
 echo "Please log in to Deluge and configure password and ssl"
 echo "use https default port is 9092 - default pass is deluge"

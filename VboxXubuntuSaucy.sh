@@ -23,11 +23,10 @@ SUDO_TIMEOUT=60
 ###########################
 setupTools() {
   echo "Install Tools"
-  #Sublime text in now available in version 3 but still use version 2
-  add-apt-repository -y ppa:webupd8team/sublime-text-2
-  add-apt-repository -y ppa:keithw/mosh
+  #Sublime text in now available in version 3 lets try it
+  add-apt-repository -y ppa:webupd8team/sublime-text-3
   apt-get update
-  apt-get install -y sublime-text
+  apt-get install -y sublime-text-installer
   #tree lists contents of a directory
   apt-get install -y tree terminator vim less screen git htop mosh sshfs
 }
@@ -63,7 +62,7 @@ setupVboxTools() {
   echo "Installing Virtual Box Stuff"
   apt-get -y install dkms linux-headers-generic linux-headers-$(uname -r)
   echo "###########################################"
-  echo "Mount Additions CD-ROM and press any key"
+  echo "Mount Additions CD-ROM open folder and press any key"
   read unused
   cd /media/$USERNAME/VBOX*
   ./VBoxLinuxAdditions.run

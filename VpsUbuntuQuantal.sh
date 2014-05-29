@@ -43,7 +43,6 @@ update-locale
 #Install Tools
 echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
-add-apt-repository -y ppa:keithw/mosh
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
 apt-get install -y -qq dialog tree vim less screen git htop software-properties-common mosh
@@ -61,6 +60,7 @@ mkdir -p /home/$USERNAME/.config
 #Install vsftpd ftp server with SSL
 echo "#################"
 echo "INSTALLING SECURED FTP SERVER"
+###@TODO remove this section as the FTPS Server is not working... sftp is sufficient anyways
 apt-get install vsftpd
 sed -i "s/#chroot_local_user=YES/chroot_local_user=YES/g" /etc/vsftpd.conf
 
@@ -78,7 +78,7 @@ force_local_logins_ssl=YES
 ssl_tlsv1=YES
 ssl_sslv2=NO
 ssl_sslv3=NO
-#rsa_cert_file=/etc/vsftpd/vsftpd.pem
+rsa_cert_file=/etc/vsftpd/vsftpd.pem
 # Filezilla uses port 21 if you don't set any port
 # in Servertype "FTPES - FTP over explicit TLS/SSL"
 # Port 990 is the default used for FTPS protocol.

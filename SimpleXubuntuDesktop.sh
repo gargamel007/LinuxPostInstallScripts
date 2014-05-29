@@ -33,7 +33,7 @@ echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
 apt-get install -y -qq tree vim less screen git htop mosh openssh-server terminator sshfs gksu leafpad synaptic gdebi linux-firmware-nonfree gparted
-apt-get install -y -qq vlc
+apt-get install -y -qq vlc aptitude synaptic gdebi-core gnome-system-monitor xubuntu-restricted-extras libavcodec-extra
 
 #Setup a proper ssh server
 sed -i "s/PermitRootLogin yes/PermitRootLogin no/g" /etc/ssh/sshd_config
@@ -52,7 +52,9 @@ vm.swappiness=10
 vm.vfs_cache_pressure=50
 END
 
-
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+gdebi google-chrome-stable_current_amd64.deb
+rm google-chrome-stable_current_amd64.deb
 
 echo "Once completed press any key"
 read a_unused

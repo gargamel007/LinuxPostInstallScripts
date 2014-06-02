@@ -3,7 +3,7 @@
 ###########################
 #Doc & Usage 
 ###########################
-#This script is intended for post install on a xubuntu 14.04 system on a simple laptop
+#This script is intended for post install on a Mint 14.04 system on a simple laptop
 :<<'USAGE'
 sudo apt-get -qq update && apt-get -y -qq install git
 git clone https://github.com/gargamel007/LinuxPostInstallScripts.git Code/LinuxPostInstallScripts
@@ -32,10 +32,10 @@ echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 #tree lists contents of a directory
-apt-get install -y -qq tree vim less screen git htop mosh openssh-server terminator sshfs gksu leafpad synaptic gdebi linux-firmware-nonfree gparted
-apt-get install -y -qq vlc aptitude synaptic gdebi-core gnome-system-monitor xubuntu-restricted-extras libavcodec-extra ttf-mscorefonts-installer non-free-codecs
+apt-get install -y tree vim less screen git htop mosh openssh-server terminator sshfs gksu leafpad synaptic gdebi linux-firmware-nonfree gparted
+apt-get install -y vlc aptitude synaptic gdebi-core gnome-system-monitor xubuntu-restricted-extras libavcodec-extra ttf-mscorefonts-installer non-free-codecs
 #speedup app startup time
-apt-get install -y -qq preload zram-config
+apt-get install -y preload zram-config clamtk
 #Optionnal : shotwell (photo organizer), clementine (music player)
 
 #Setup a proper ssh server
@@ -49,8 +49,9 @@ dpkg-reconfigure openssh-server
 
 #For laptops
 add-apt-repository ppa:linrunner/tlp
+add-apt-repository ppa:peterlevi/ppa
 apt-get update
-apt-get install tlp tlp-rdw
+apt-get install tlp tlp-rdw variety
 
 tee -a /etc/sysctl.conf 1>/dev/null <<END
 # Decrease swap usage to a reasonable level

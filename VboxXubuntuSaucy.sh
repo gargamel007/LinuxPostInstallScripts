@@ -28,7 +28,8 @@ setupTools() {
   apt-get update
   apt-get install -y sublime-text-installer
   #tree lists contents of a directory
-  apt-get install -y tree terminator vim less screen git htop mosh sshfs
+  #ncdu can find which folder is getting too big
+  apt-get install -y tree terminator vim less screen git htop mosh sshfs ncdu
 }
 
 ###########################

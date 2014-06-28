@@ -14,7 +14,7 @@ USAGE
 #Configuration
 ###########################
 BASEDIR=$(dirname $0)
-
+USERNAME="gargamel"
 
 ###########################
 #Main
@@ -26,7 +26,7 @@ fi
 #To prevent dialogs
 export DEBIAN_FRONTEND=noninteractive
 #Show all commands
-set -x
+#set -x
 
 #Fix locale issue
 /usr/share/locales/install-language-pack fr_FR
@@ -42,11 +42,18 @@ echo "#############################"
 echo "UPGRADE  && INSTAL BASE TOOLS"
 apt-get -qq update && apt-get -qq -y upgrade
 INSTPKG="dialog tree vim less screen git htop software-properties-common mosh rsync ncdu"
-#Perl is needed for rename command
-INSTPKG+=" perl sudo locate toilet"
+INSTPKG+=" perl sudo locate toilet man"
+INSTPKG+=" zip binfmt-support bison build-essential ccache debootstrap"
+INSTPKG+=" flex gawk lvm2 qemu-user-static texinfo texlive u-boot-tools uuid-dev zlib1g-dev"
+INSTPKG+=" unzip libncurses5-dev pkg-config libusb-1.0-0-dev parted"
 apt-get install -y -qq $INSTPKG
 
-
+apt-get -y -qq install build-essential linux-headers-$(uname -r)
+apt-get -y -qq install --no-install-recommends virtualbox-guest-utils 
+apt-get -y -qq install virtualbox-guest-dkms
+adduser $USERNAME vboxsf
+#setup you shared folder for auto mount and make permanent.
+#and just reboot : folder will be in /media/sf_SHARENAME
 
 #Tweak vim 
 sed -i "s/\"syntax on/syntax on/g" /etc/vim/vimrc

@@ -31,7 +31,7 @@ setupTools() {
   apt-get install -y sublime-text-installer
   #tree lists contents of a directory
   #ncdu can find which folder is getting too big
-  apt-get install -y -qq terminator tree vim less screen git htop mosh sshfs ncdu tmux rubygems typecatcher
+  apt-get install -y -qq terminator tree vim less screen git htop mosh sshfs ncdu tmux rubygems-integration typecatcher
   gem install tmuxinator
 }
 

@@ -26,11 +26,12 @@ setupTools() {
   echo "Install Tools"
   #Sublime text in now available in version 3 lets try it
   add-apt-repository -y ppa:webupd8team/sublime-text-3
+  add-apt-repository ppa:andrewsomething/typecatcher
   apt-get update
   apt-get install -y sublime-text-installer
   #tree lists contents of a directory
   #ncdu can find which folder is getting too big
-  apt-get install -y -qq terminator tree vim less screen git htop mosh sshfs ncdu tmux rubygems
+  apt-get install -y -qq terminator tree vim less screen git htop mosh sshfs ncdu tmux rubygems typecatcher
   gem install tmuxinator
 }
 

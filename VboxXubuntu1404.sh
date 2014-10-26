@@ -116,8 +116,12 @@ sshConfig() {
 ###########################
 fontConfig() {
   wget https://github.com/Lokaltog/powerline-fonts/raw/master/Inconsolata-g/Inconsolata-g%20for%20Powerline.otf
-  mkdir -p /home/$USERNAME/.fonts/
-  mv 'Inconsolata-g for Powerline.otf' /home/$USERNAME/.fonts/
+  wget https://github.com/Lokaltog/powerline-fonts/raw/master/Inconsolata-g/fonts.dir
+  wget https://github.com/Lokaltog/powerline-fonts/raw/master/Inconsolata-g/fonts.scale
+  mkdir -p /home/$USERNAME/.fonts/Powerline/
+  mv 'Inconsolata-g for Powerline.otf' /home/$USERNAME/.fonts/Powerline/
+  mv 'fonts.dir' /home/$USERNAME/.fonts/Powerline/
+  mv 'fonts.scale' /home/$USERNAME/.fonts/Powerline/
   chown -R $USERNAME:$USERNAME /home/$USERNAME/.fonts
   su $USERNAME -c "fc-cache -vf ~/.fonts/"
 }

@@ -32,7 +32,16 @@ setupTools() {
   #tree lists contents of a directory
   #ncdu can find which folder is getting too big
   apt-get install -y -qq terminator tree vim less screen git htop mosh sshfs ncdu tmux rubygems-integration typecatcher
+  apt-get install -y -qq aptitude zsh
   gem install tmuxinator
+
+  #Install Oh My Zsh
+  wget --no-check-certificate http://install.ohmyz.sh -O - | sh
+  cp -R /root/.oh-my-zsh/ /home/$USERNAME/
+  cp /root/.zsh* /home/$USERNAME/
+  chown -R $USERNAME:$USERNAME /home/$USERNAME/.*
+  local ZSHPATH=`which zsh`
+  su $USERNAME -c "chsh -s $ZSHPATH"
 }
 
 ###########################
@@ -95,6 +104,24 @@ setupVboxTools() {
   #and just reboot : folder will be in /media/sf_SHARENAME
 }
 
+###########################
+#SSH Config
+###########################
+sshConfig() {
+  su $USERNAME -c "ssh-keygen -t dsa -f /home/$USERNAME/.ssh/id_dsa"
+}
+
+###########################
+#Fonts Configuration
+###########################
+fontConfig() {
+  wget https://github.com/Lokaltog/powerline-fonts/raw/master/Inconsolata-g/Inconsolata-g%20for%20Powerline.otf
+  mkdir -p /home/$USERNAME/.fonts/
+  mv 'Inconsolata-g for Powerline.otf' /home/$USERNAME/.fonts/
+  chown -R $USERNAME:$USERNAME /home/$USERNAME/.fonts
+  su $USERNAME -c "fc-cache -vf ~/.fonts/"
+}
+
 
 ###########################
 #MAIN SECTION
@@ -109,6 +136,8 @@ setupTools
 systemTweak
 upgradeSystem
 setupVboxTools
+sshConfig
+fontConfig
 
 echo "###########################################"
 echo "#####	Setup Completed	  ##########"

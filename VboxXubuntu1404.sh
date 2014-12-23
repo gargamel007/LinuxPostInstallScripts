@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###########################
-#Doc & Usage 
+#Doc & Usage
 ###########################
 #This script is intended for post install on a xubuntu 13.10 system on virtual box !
 :<<'USAGE'
@@ -44,19 +44,27 @@ setupTools() {
   su $USERNAME -c "chsh -s $ZSHPATH"
 }
 
+setupDocker() {
+  echo "Install Docker"
+  wget -qO- https://get.docker.io/gpg | apt-key add -
+  echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
+  apt-get update
+  apt-get install -y -qq lxc-docker
+}
+
 ###########################
 #System Tweaking
 ###########################
 systemTweak() {
   echo "System Tweaking"
   #Decrease swapiness
-  if ! grep -q swapiness /etc/sysctl.conf 
+  if ! grep -q swapiness /etc/sysctl.conf
     then
     "# Decrease swap usage to a more reasonable level" >> /etc/sysctl.conf
     "vm.swappiness=5" >> /etc/sysctl.conf
   fi
   #Add noatime to decrease ssd usage
-  if ! grep -q noatime /etc/fstab 
+  if ! grep -q noatime /etc/fstab
     then sed -i "s/errors/noatime,errors/g" /etc/fstab
   fi
 }
@@ -69,7 +77,7 @@ systemTweak() {
 changeSudoTimeout() {
   echo "Extend sudo timeout to $SUDO_TIMEOUT"
   cp /etc/sudoers /tmp/sudoers.new
-    if ! grep -q passwd_timeout /tmp/sudoers.new 
+    if ! grep -q passwd_timeout /tmp/sudoers.new
     then
     sudo sed -i "s/env_reset/env_reset,passwd_timeout=$SUDO_TIMEOUT/g" /tmp/sudoers.new
   fi
@@ -137,6 +145,7 @@ fi
 
 changeSudoTimeout
 setupTools
+setupDocker
 systemTweak
 upgradeSystem
 setupVboxTools

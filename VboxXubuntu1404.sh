@@ -132,6 +132,11 @@ fontConfig() {
   mv 'fonts.scale' /home/$USERNAME/.fonts/Powerline/
   chown -R $USERNAME:$USERNAME /home/$USERNAME/.fonts
   su $USERNAME -c "fc-cache -vf ~/.fonts/"
+
+  #make cursor blink in xfce-4 terminal
+  sed -i "s/MiscCursorBlinks=FALSE/MiscCursorBlinks=TRUE/g" /home/$USERNAME/.config/xfce4/terminal/terminalrc
+  #Underline does not goes well with vim cursoline :(
+  #sed -i "s/MiscCursorShape=TERMINAL_CURSOR_SHAPE_BLOCK/MiscCursorShape=TERMINAL_CURSOR_SHAPE_UNDERLINE/g" /home/$USERNAME/.config/xfce4/terminal/terminalrc
 }
 
 

@@ -25,12 +25,12 @@ SUDO_TIMEOUT=60
 ###########################
 setupTools() {
   echo "Install Tools"
-  add-apt-repository ppa:andrewsomething/typecatcher
-  apt-get update
+  apt-get update -qq
   #tree lists contents of a directory
+  #typecatcher can donwload some nice fonts
   #ncdu can find which folder is getting too big
   apt-get install -y -qq terminator tree vim less git htop mosh sshfs ncdu tmux rubygems-integration typecatcher
-  apt-get install -y -qq aptitude zsh
+  apt-get install -y -qq aptitude zsh gparted unetbootin
   gem install tmuxinator
 
   #Install Oh My Zsh
@@ -47,7 +47,7 @@ setupDocker() {
   echo "Install Docker"
   wget -qO- https://get.docker.io/gpg | apt-key add -
   echo deb http://get.docker.io/ubuntu docker main > /etc/apt/sources.list.d/docker.list
-  apt-get update
+  apt-get update -qq
   apt-get install -y -qq lxc-docker
 }
 
@@ -59,8 +59,8 @@ systemTweak() {
   #Decrease swapiness
   if ! grep -q swapiness /etc/sysctl.conf
     then
-    "# Decrease swap usage to a more reasonable level" >> /etc/sysctl.conf
-    "vm.swappiness=5" >> /etc/sysctl.conf
+    echo "# Decrease swap usage to a more reasonable level" >> /etc/sysctl.conf
+    echo "vm.swappiness=5" >> /etc/sysctl.conf
   fi
   #Add noatime to decrease ssd usage
   if ! grep -q noatime /etc/fstab
@@ -90,7 +90,7 @@ changeSudoTimeout() {
 ###########################
 upgradeSystem() {
   echo "Upgrade system"
-  apt-get dist-upgrade -y
+  apt-get dist-upgrade -y -qq
 }
 
 ###########################
@@ -98,9 +98,9 @@ upgradeSystem() {
 ###########################
 setupVboxTools() {
   echo "Installing Virtual Box Stuff"
-  apt-get -y install dkms linux-headers-generic linux-headers-$(uname -r)
+  apt-get -y -qq install dkms linux-headers-generic linux-headers-$(uname -r)
   echo "###########################################"
-  echo "Mount Additions CD-ROM open folder and press any key"
+  echo "Mount Additions CD-ROM open folder and press ENTER"
   read unused
   cd /media/$USERNAME/VBOX*
   ./VBoxLinuxAdditions.run

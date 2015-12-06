@@ -117,7 +117,10 @@ setupVboxTools() {
 #SSH Config
 ###########################
 sshConfig() {
+  echo "Generate SSH keys ! DO NOT USE PASSPHRASE"
   su $USERNAME -c "ssh-keygen -t dsa -f /home/$USERNAME/.ssh/id_dsa"
+  su $USERNAME -c "ssh-keygen -t rsa"
+  su $USERNAME -c "cat /home/$USERNAME/.ssh/id_rsa.pub >> /home/$USERNAME/.ssh/authorized_keys"
 }
 
 ###########################
